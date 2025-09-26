@@ -2,9 +2,8 @@ name: Log ISS Location Data Daily
 
 on:
   schedule:
-    # Runs at 12:00 UTC (noon) every day
     - cron: "0 12 * * *"
-  workflow_dispatch: # Allows manual triggering
+  workflow_dispatch:
 
 jobs:
   collect-iss-data:
@@ -16,11 +15,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: 23f2001817@ds.study.iitm.ac.in
+        run: echo "email step present"
+
       - name: Install uv
         uses: astral-sh/setup-uv@v5
 
       - name: Fetch ISS location data
-        run: | # python
+        run: |
           uv run --with requests python << 'EOF'
           import requests
 
@@ -30,7 +32,7 @@ jobs:
           'EOF'
 
       - name: Commit and push changes
-        run: | # shell
+        run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add iss-location.jsonl
